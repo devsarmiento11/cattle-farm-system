@@ -62,6 +62,7 @@ td
                     <th>Payment Method</th>
                     <th>Order Date</th>
                     <th>Delete</th>
+                    <th>Review</th>
                 </tr>
 
                 @forelse($orders as $order)
@@ -86,10 +87,20 @@ td
                     <td>
                         <a class="btn btn-danger" onclick="confirmation(event)" href="{{url('delete_order',$order->id)}}">Delete</a>
                     </td>
+                    <td>
+                        @php
+                            $existingReview = \App\Models\Review::where('order_id', $order->id)->first();
+                        @endphp
+                        @if(!$existingReview)
+                            <a class="btn btn-primary" href="{{ url('/rate/'.$order->id) }}">Rate Product</a>
+                        @else
+                            <span class="text-success">Already Rated</span>
+                        @endif
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="12" style="text-align: center;">No orders found.</td>
+                    <td colspan="13" style="text-align: center;">No orders found.</td>
                 </tr>
                 @endforelse
             </table>

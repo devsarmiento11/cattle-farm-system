@@ -32,7 +32,9 @@
             <div class="cattle-name">{{ $product->title }}</div>
             <div class="cattle-price">Price: ₱{{ number_format($product->price, 0) }}</div>
             <div class="cattle-details">Age: {{ $product->age }}<br>Weight: {{ $product->weight }} kg<br>{{ $product->description }}</div>
-        <div class="cattle-rating">⭐ 4.5 (100 reviews)</div>
+        <div class="cattle-rating">
+            ⭐ {{ $product->average_rating }} ({{ $product->review_count }} review{{ $product->review_count == 1 ? '' : 's' }})
+        </div>
             <button class="btn-details" onclick="window.location.href='/checkout/{{ $product->id }}'">Buy Now</button>
         </div>
         @endforeach

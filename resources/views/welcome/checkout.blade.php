@@ -160,19 +160,37 @@
                         <label for="address">Delivery Address</label>
                         <textarea id="address" name="address" required></textarea>
                     </div>
+                    @if ($errors->any())
+                    <div class="error-message">
+                        <strong>Errors:</strong>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                     <div class="form-group">
                         <label for="payment_method">Payment Method</label>
                         <select id="payment_method" name="payment_method" required>
                             <option value="">Select Payment Method</option>
                             
-                            <option value="cod">Cash on Delivery</option>
+                            <option value="cod" {{ old('payment_method') == 'cod' ? 'selected' : '' }}>Cash on Delivery</option>
+                            <option value="pick_up" {{ old('payment_method') == 'pick_up' ? 'selected' : '' }}>Pick up</option>
                             
                         </select>
+                        @error('payment_method')
+                        <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="notes">Additional Notes</label>
                         <textarea id="notes" name="notes"></textarea>
                     </div>
+
+                    
+
                     <button type="submit" class="btn-checkout">Complete Purchase</button>
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                     <input type="hidden" name="quantity" value="1"> <!-- Assuming quantity is 1 for now, can be made dynamic -->

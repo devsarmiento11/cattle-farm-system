@@ -14,31 +14,216 @@ class HomeController extends Controller
 
     public function home()
     {
-        $products = Product::all();
+        // Fetch products with average rating and review count joined from reviews table
+        $products = Product::leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
+            ->select(
+                'products.id',
+                'products.title',
+                'products.description',
+                'products.image',
+                'products.price',
+                'products.age',
+                'products.weight',
+                'products.category',
+                'products.quantity',
+                'products.created_at',
+                'products.updated_at',
+                \DB::raw('COALESCE(AVG(reviews.rating), 0) as average_rating'),
+                \DB::raw('COUNT(reviews.id) as review_count')
+            )
+            ->groupBy(
+                'products.id',
+                'products.title',
+                'products.description',
+                'products.image',
+                'products.price',
+                'products.age',
+                'products.weight',
+                'products.category',
+                'products.quantity',
+                'products.created_at',
+                'products.updated_at'
+            )
+            ->get();
+
+        // Format average_rating to one decimal place
+        $products->transform(function ($product) {
+            $product->average_rating = number_format($product->average_rating, 1);
+            return $product;
+        });
+
         return view('home.index', compact('products'));
     }
 
     public function dashboard()
     {
-        $products = Product::all();
+        // Fetch products with average rating and review count joined from reviews table
+$products = Product::leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
+    ->select(
+        'products.id',
+        'products.title',
+        'products.description',
+        'products.image',
+        'products.price',
+        'products.age',
+        'products.weight',
+        'products.category',
+        'products.quantity',
+        'products.created_at',
+        'products.updated_at',
+        \DB::raw('COALESCE(AVG(reviews.rating), 0) as average_rating'),
+        \DB::raw('COUNT(reviews.id) as review_count')
+    )
+    ->groupBy(
+        'products.id',
+        'products.title',
+        'products.description',
+        'products.image',
+        'products.price',
+        'products.age',
+        'products.weight',
+        'products.category',
+        'products.quantity',
+        'products.created_at',
+        'products.updated_at'
+    )
+    ->get();
+
+        // Format average_rating to one decimal place
+        $products->transform(function ($product) {
+            $product->average_rating = number_format($product->average_rating, 1);
+            return $product;
+        });
+
         return view('welcome.index', compact('products'));
     }
 
     public function native()
     {
-        $products = Product::where('category', 'Native')->get();
+        $products = Product::leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
+            ->select(
+                'products.id',
+                'products.title',
+                'products.description',
+                'products.image',
+                'products.price',
+                'products.age',
+                'products.weight',
+                'products.category',
+                'products.quantity',
+                'products.created_at',
+                'products.updated_at',
+                \DB::raw('COALESCE(AVG(reviews.rating), 0) as average_rating'),
+                \DB::raw('COUNT(reviews.id) as review_count')
+            )
+            ->where('products.category', 'Native')
+            ->groupBy(
+                'products.id',
+                'products.title',
+                'products.description',
+                'products.image',
+                'products.price',
+                'products.age',
+                'products.weight',
+                'products.category',
+                'products.quantity',
+                'products.created_at',
+                'products.updated_at'
+            )
+            ->get();
+
+        // Format average_rating to one decimal place
+        $products->transform(function ($product) {
+            $product->average_rating = number_format($product->average_rating, 1);
+            return $product;
+        });
+
         return view('welcome.native', compact('products'));
     }
 
     public function imported()
     {
-        $products = Product::where('category', 'Imported')->get();
+        $products = Product::leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
+            ->select(
+                'products.id',
+                'products.title',
+                'products.description',
+                'products.image',
+                'products.price',
+                'products.age',
+                'products.weight',
+                'products.category',
+                'products.quantity',
+                'products.created_at',
+                'products.updated_at',
+                \DB::raw('COALESCE(AVG(reviews.rating), 0) as average_rating'),
+                \DB::raw('COUNT(reviews.id) as review_count')
+            )
+            ->where('products.category', 'Imported')
+            ->groupBy(
+                'products.id',
+                'products.title',
+                'products.description',
+                'products.image',
+                'products.price',
+                'products.age',
+                'products.weight',
+                'products.category',
+                'products.quantity',
+                'products.created_at',
+                'products.updated_at'
+            )
+            ->get();
+
+        // Format average_rating to one decimal place
+        $products->transform(function ($product) {
+            $product->average_rating = number_format($product->average_rating, 1);
+            return $product;
+        });
+
         return view('welcome.imported', compact('products'));
     }
 
     public function crossbreed()
     {
-        $products = Product::where('category', 'Crossbreed')->get();
+        $products = Product::leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
+            ->select(
+                'products.id',
+                'products.title',
+                'products.description',
+                'products.image',
+                'products.price',
+                'products.age',
+                'products.weight',
+                'products.category',
+                'products.quantity',
+                'products.created_at',
+                'products.updated_at',
+                \DB::raw('COALESCE(AVG(reviews.rating), 0) as average_rating'),
+                \DB::raw('COUNT(reviews.id) as review_count')
+            )
+            ->where('products.category', 'Crossbreed')
+            ->groupBy(
+                'products.id',
+                'products.title',
+                'products.description',
+                'products.image',
+                'products.price',
+                'products.age',
+                'products.weight',
+                'products.category',
+                'products.quantity',
+                'products.created_at',
+                'products.updated_at'
+            )
+            ->get();
+
+        // Format average_rating to one decimal place
+        $products->transform(function ($product) {
+            $product->average_rating = number_format($product->average_rating, 1);
+            return $product;
+        });
+
         return view('welcome.crossbreed', compact('products'));
     }
 
@@ -58,7 +243,7 @@ class HomeController extends Controller
             'address' => 'required|string|max:500',
             'product_id' => 'required|integer',
             'quantity' => 'required|integer|min:1',
-            'payment_method' => 'required|string|in:cod,gcash,visa,mastercard,paypal',
+            'payment_method' => 'required|string|in:cod,pick_up,gcash,visa,mastercard,paypal',
         ]);
 
         // Get the product
@@ -86,11 +271,58 @@ class HomeController extends Controller
         $order->status = 'pending';
         $order->save();
 
-        // Optionally, reduce product quantity if needed
-        // $product->quantity -= $request->quantity;
-        // $product->save();
-
         // Redirect to complete page with success message
         return view('welcome.complete')->with('success', 'Order placed successfully!');
+    }
+
+    public function showRatingForm($order_id)
+    {
+        $order = \App\Models\Order::find($order_id);
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Order not found.');
+        }
+
+        // Optionally, add logic to verify user ownership of the order if users are authenticated.
+
+        return view('welcome.rate_product', compact('order'));
+    }
+
+public function submitRating(Request $request, $order_id)
+    {
+        $order = \App\Models\Order::find($order_id);
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Order not found.');
+        }
+
+        // Validate rating input
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'review_text' => 'nullable|string|max:1000',
+        ]);
+
+        // Check if review already exists for this order to prevent duplicate rating
+        $existingReview = \App\Models\Review::where('order_id', $order_id)->first();
+        if ($existingReview) {
+            return redirect()->back()->with('error', 'You have already reviewed this order.');
+        }
+
+        // Find product by order's product_title
+        $product = \App\Models\Product::where('title', $order->product_title)->first();
+        if (!$product) {
+            return redirect()->back()->with('error', 'Product not found for this order.');
+        }
+
+        $review = new \App\Models\Review();
+        $review->order_id = $order->id;
+        $review->product_id = $product->id;
+        $review->user_name = $order->name;
+        $review->user_email = $order->email;
+        $review->rating = $request->rating;
+        $review->review_text = $request->review_text;
+        $review->save();
+
+        return redirect()->route('dashboard')->with('success', 'Review submitted successfully!');
     }
 }

@@ -17,6 +17,9 @@ Route::get('/checkout/{id}',[HomeController::class,'checkout']);
 
 Route::post('/complete',[HomeController::class,'complete'])->name('complete');
 
+Route::get('/rate/{order_id}', [HomeController::class, 'showRatingForm'])->name('rate.form');
+Route::post('/rate/{order_id}', [HomeController::class, 'submitRating'])->name('rate.submit');
+
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
