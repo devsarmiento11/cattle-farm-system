@@ -271,8 +271,24 @@ $products = Product::leftJoin('reviews', 'products.id', '=', 'reviews.product_id
         $order->status = 'pending';
         $order->save();
 
-        // Redirect to complete page with success message
-        return view('welcome.complete')->with('success', 'Order placed successfully!');
+        // Redirect to order success for both guests and logged-in users
+        session()->flash('order_id', $order->id);
+        return redirect()->route('order.success');
+    }
+
+    public function orderSuccess(Request $request)
+    {
+        $orderId = session('order_id');
+        if (!$orderId) {
+            return redirect('/')->with('error', 'No order to display.');
+        }
+
+        $order = \App\Models\Order::find($orderId);
+        if (!$order) {
+            return redirect('/')->with('error', 'Order not found.');
+        }
+
+        return view('welcome.order_success', compact('order'));
     }
 
     public function showRatingForm($order_id)
@@ -324,5 +340,38 @@ public function submitRating(Request $request, $order_id)
         $review->save();
 
         return redirect()->route('dashboard')->with('success', 'Review submitted successfully!');
+    }
+
+    public function myOrders()
+    {
+        $orders = \App\Models\Order::where('email', auth()->user()->email)->get();
+        return view('welcome.my_orders', compact('orders'));
+    }
+
+    public function quickBuy($id)
+    {
+        $product = Product::findOrFail($id);
+        $user = auth()->user();
+
+        // Calculate total price (assuming quantity 1)
+        $totalPrice = $product->price * 1;
+
+        // Save the order
+        $order = new \App\Models\Order();
+        $order->name = $user->name;
+        $order->email = $user->email;
+        $order->phone = $user->phone ?? '';
+        $order->address = $user->address ?? '';
+        $order->product_title = $product->title;
+        $order->product_price = $product->price;
+        $order->product_category = $product->category;
+        $order->product_image = $product->image;
+        $order->quantity = 1;
+        $order->price = $totalPrice;
+        $order->payment_method = 'quick_buy';
+        $order->status = 'pending';
+        $order->save();
+
+        return redirect()->route('my.orders')->with('success', 'Order placed successfully!');
     }
 }

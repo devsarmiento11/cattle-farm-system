@@ -16,6 +16,7 @@ Route::get('/crossbreed',[HomeController::class,'crossbreed']);
 Route::get('/checkout/{id}',[HomeController::class,'checkout']);
 
 Route::post('/complete',[HomeController::class,'complete'])->name('complete');
+Route::get('/order-success',[HomeController::class,'orderSuccess'])->name('order.success');
 
 Route::get('/rate/{order_id}', [HomeController::class, 'showRatingForm'])->name('rate.form');
 Route::post('/rate/{order_id}', [HomeController::class, 'submitRating'])->name('rate.submit');
@@ -23,6 +24,8 @@ Route::post('/rate/{order_id}', [HomeController::class, 'submitRating'])->name('
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/my-orders', [HomeController::class, 'myOrders'])->name('my.orders');
+    Route::post('/quick-buy/{id}', [HomeController::class, 'quickBuy'])->name('quick.buy');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

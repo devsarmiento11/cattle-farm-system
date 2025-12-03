@@ -33,6 +33,35 @@ td
   text-align: center;
   color: white;
 }
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.status-processing {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.status-completed {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+    color: white;
+}
    </style>
   </head>
   <body>
@@ -61,6 +90,8 @@ td
                     <th>Address</th>
                     <th>Payment Method</th>
                     <th>Order Date</th>
+                    <th>Status</th>
+                    <th>Edit Status</th>
                     <th>Delete</th>
                     <th>Review</th>
                 </tr>
@@ -85,6 +116,24 @@ td
                     <td>{{ $order->payment_method }}</td>
                     <td>{{ $order->created_at->format('M d, Y H:i') }}</td>
                     <td>
+                        <span class="status-badge status-{{ strtolower($order->status ?? 'pending') }}">
+                            {{ ucfirst($order->status ?? 'pending') }}
+                        </span>
+                    </td>
+                    <td>
+                        <form action="{{ route('update_order_status', $order->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('PATCH')
+                            <select name="status" class="form-control" style="display: inline-block; width: auto;">
+                                <option value="pending" {{ ($order->status ?? 'pending') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="processing" {{ ($order->status ?? 'pending') == 'processing' ? 'selected' : '' }}>Processing</option>
+                                <option value="completed" {{ ($order->status ?? 'pending') == 'completed' ? 'selected' : '' }}>Completed</option>
+                                <option value="cancelled" {{ ($order->status ?? 'pending') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                            </select>
+                            <button type="submit" class="btn btn-success btn-sm">Update</button>
+                        </form>
+                    </td>
+                    <td>
                         <a class="btn btn-danger" onclick="confirmation(event)" href="{{url('delete_order',$order->id)}}">Delete</a>
                     </td>
                     <td>
@@ -100,7 +149,7 @@ td
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="13" style="text-align: center;">No orders found.</td>
+                    <td colspan="15" style="text-align: center;">No orders found.</td>
                 </tr>
                 @endforelse
             </table>

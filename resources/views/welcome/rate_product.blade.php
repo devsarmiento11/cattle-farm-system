@@ -32,10 +32,11 @@
         }
 
         .star-rating {
-            direction: rtl;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
             font-size: 30px;
             unicode-bidi: bidi-override;
-            text-align: center;
         }
 
         .star-rating input[type="radio"] {
@@ -47,6 +48,7 @@
             cursor: pointer;
         }
 
+        .star-rating input[type="radio"]:checked + label,
         .star-rating input[type="radio"]:checked ~ label {
             color: #ffca08;
         }

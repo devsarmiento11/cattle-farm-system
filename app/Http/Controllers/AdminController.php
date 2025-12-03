@@ -193,9 +193,9 @@ return view('admin.category',compact('data'));
         $order = Order::find($id);
 
         if ($order) {
-            $order->status = 'delivered';
+            $order->status = $request->status;
             $order->save();
-            toastr()->addSuccess('Order status updated to delivered.');
+            toastr()->addSuccess('Order status updated successfully.');
         } else {
             toastr()->addError('Order not found.');
         }

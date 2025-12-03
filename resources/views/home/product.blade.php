@@ -11,7 +11,7 @@
                     ⭐ {{ $product->average_rating ?? '0.0' }}
                     ({{ $product->review_count ?? 0 }} reviews)
                 </div>
-                <button class="btn-details">Buy Now</button>
+                <button class="btn-details" onclick="window.location.href='/checkout/{{ $product->id }}'">Buy Now</button>
             </div>
             @endforeach
         </div>

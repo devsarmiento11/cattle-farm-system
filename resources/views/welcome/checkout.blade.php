@@ -113,6 +113,29 @@
             background-color: #218838;
         }
 
+        .btn-shipping-fee {
+            padding: 8px 16px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shipping-fee:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-shipping-fee.selected {
+            background-color: #28a745;
+        }
+
+        .btn-shipping-fee.selected:hover {
+            background-color: #218838;
+        }
+
         @media (max-width: 768px) {
             .checkout-container {
                 flex-direction: column;
@@ -175,14 +198,18 @@
                         <label for="payment_method">Payment Method</label>
                         <select id="payment_method" name="payment_method" required>
                             <option value="">Select Payment Method</option>
-                            
+
                             <option value="cod" {{ old('payment_method') == 'cod' ? 'selected' : '' }}>Cash on Delivery</option>
                             <option value="pick_up" {{ old('payment_method') == 'pick_up' ? 'selected' : '' }}>Pick up</option>
-                            
+
                         </select>
                         @error('payment_method')
                         <div class="error-message">{{ $message }}</div>
                         @enderror
+                    </div>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <button type="button" id="shipping_fee_btn" class="btn-shipping-fee" onclick="toggleShippingFee()">Plus shipping fee</button>
+                        <input type="hidden" id="shipping_fee" name="shipping_fee" value="no">
                     </div>
                     <div class="form-group">
                         <label for="notes">Additional Notes</label>
@@ -200,5 +227,19 @@
     </section>
 
     @include('welcome.footer')
+
+    <script>
+        function toggleShippingFee() {
+            const btn = document.getElementById('shipping_fee_btn');
+            const hiddenInput = document.getElementById('shipping_fee');
+            if (btn.classList.contains('selected')) {
+                btn.classList.remove('selected');
+                hiddenInput.value = 'no';
+            } else {
+                btn.classList.add('selected');
+                hiddenInput.value = 'yes';
+            }
+        }
+    </script>
 </body>
 </html>
